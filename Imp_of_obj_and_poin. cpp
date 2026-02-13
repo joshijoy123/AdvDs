@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+
+class Book
+{
+public:
+    int bookId;
+    string title;
+
+    void display()
+    {
+        cout<<"Book ID: "<<bookId<<endl;
+        cout<<"Title: "<<title<<endl;
+    }
+};
+
+int main()
+{
+    Book b1;
+    b1.bookId = 10;
+    b1.title = "C++ Programming";
+
+    Book* ptr = &b1;   // pointer to existing object
+
+    cout<<"Using normal object:\n";
+    b1.display();
+
+    cout<<"\nUsing pointer to same object:\n";
+    ptr->display();
+
+    return 0;
+}
