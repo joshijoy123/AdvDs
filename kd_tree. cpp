@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+// Node structure
+struct Node {
+    int point[2]; // x, y
+    Node* left;
+    Node* right;
+
+    Node(int x, int y) {
+        point[0] = x;
+        point[1] = y;
+        left = right = NULL;
+    }
+};
+
+// Insert function
+Node* insert(Node* root, int point[], int depth) {
+    if (root == NULL)
+        return new Node(point[0], point[1]);
+
+    int cd = depth % 2; // current dimension (0=x, 1=y)
+
+    if (point[cd] < root->point[cd])
+        root->left = insert(root->left, point, depth + 1);
+    else
+        root->right = insert(root->right, point, depth + 1);
+
+    return root;
+}
+
+// Search function
+bool search(Node* root, int point[], int depth) {
+    if (root == NULL)
+        return false;
+
+    if (root->point[0] == point[0] && root->point[1] == point[1])
+        return true;
+
+    int cd = depth % 2;
+
+    if (point[cd] < root->point[cd])
+        return search(root->left, point, depth + 1);
+    else
+        return search(root->right, point, depth + 1);
+}
+
+// Inorder Traversal
+void inorder(Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        cout << "(" << root->point[0] << ", " << root->point[1] << ") ";
+        inorder(root->right);
+    }
+}
+
+// Main function
+int main() {
+    Node* root = NULL;
+
+    int points[][2] = {{3,6}, {17,15}, {13,15}, {6,12}, {9,1}, {2,7}, {10,19}};
+
+    int n = sizeof(points)/sizeof(points[0]);
+
+    for (int i = 0; i < n; i++)
+        root = insert(root, points[i], 0);
+
+    cout << "KD Tree Inorder Traversal:\n";
+    inorder(root);
+
+    int target[2] = {10, 19};
+
+    if (search(root, target, 0))
+        cout << "\nPoint found!";
+    else
+        cout << "\nPoint not found!";
+
+    return 0;
+}
